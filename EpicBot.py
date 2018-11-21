@@ -4,7 +4,7 @@ from difflib import SequenceMatcher
 
 filename = "database.txt" # i didn't want to put a comment here but it looks weird otherwise so e
 max_responses = 0         # now you can automatically inflict amnesia to your robot friend!
-learn = True              # disable if you want to keep your database pristine (LEARN COMMANDS ARE STILL USABLE)
+learn = True              # disable if you want to keep your database pristine (MANUAL LEARN COMMANDS ARE STILL USABLE)
 debug = False             # shows the potential responses as well as "accuracy"
 bot_goes_first = False    # i recommend leaving this off during the first few phases of training so the bot can learn some greetings
                           # (if you want to teach some manually just leave the "if someone says..." part blank)
