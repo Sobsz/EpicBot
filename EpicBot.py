@@ -88,6 +88,20 @@ while True:
                 learn_response = input("> ")
                 bot.learn(learn_query, learn_response)
                 print("* Taught successfully!")
+            elif query in ("/multi", "/m"):
+                print("* If someone says...")
+                learn_query = input("> ")
+                print("* The bot should respond with any of these... (use /done to end training)")
+                count = 0
+                while True:
+                    learn_response = input("> ")
+                    if learn_response not in ("/done", "/d"):
+                        if len(learn_response) > 0:
+                            bot.learn(learn_query, learn_response)
+                            count += 1
+                    else:
+                        break
+                print("* Taught " + str(count) + " responses successfully!")
             elif query in ("/save", "/s"):
                 print("* Saving " + str(len(bot.responses)) + " entries...")
                 file = open(filename, "w")
@@ -114,6 +128,7 @@ while True:
                 print("* Available commands:")
                 print("* /help (/?)      - prints this list")
                 print("* /learn (/teach) - lets you teach the bot something manually")
+                print("* /multi          - teach multiple responses to one query")
                 print("* /undo           - removes the latest response")
                 print("* /save           - saves the response database")
                 print("* /dump           - outputs the current database along with the entry count")
