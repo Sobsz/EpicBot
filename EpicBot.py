@@ -3,7 +3,6 @@ import random
 from difflib import SequenceMatcher
 
 filename       = "database.txt" # i didn't want to put a comment here but it looks weird otherwise so e
-max_responses  = 0              # we wouldn't want 'em to be getting too smart, now would we
 learn          = True           # disable if you want to keep your database pristine (MANUAL LEARN COMMANDS ARE STILL USABLE)
 debug          = False          # shows the potential responses as well as "accuracy"
 bot_goes_first = False          # i recommend leaving this off during the first few phases of training so the bot can learn some greetings
@@ -11,8 +10,7 @@ bot_goes_first = False          # i recommend leaving this off during the first 
 class chatbot:
     """epic retrieval-based chatbot of minimal complexity (and effectiveness)"""
 
-    def __init__(self, max_responses = 0, responses = [("hello", "hi")]):
-        self.max_responses = max_responses
+    def __init__(self, responses = [("hello", "hi")]):
         self.responses = responses
 
     def clean(self, s):
@@ -45,9 +43,6 @@ class chatbot:
 
     def learn(self, query, response):
         self.responses.append((self.clean(query), response))
-        if self.max_responses > 0:
-            if len(self.responses) > self.max_responses:
-                self.responses.pop(0)
 
 print("* EpicBot v6.2.1 - made by zsboS#8977")
 print("* Loading database...")
@@ -55,7 +50,7 @@ try:
     file = open(filename)
     if os.path.getsize(filename) == 0:
         raise IOError
-    bot = chatbot(max_responses, eval(file.read()))
+    bot = chatbot(eval(file.read()))
     file.close()
     print("* Successfully loaded " + str(len(bot.responses)) + " entries.")
 except IOError:
