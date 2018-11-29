@@ -5,11 +5,11 @@ import discord
 import asyncio
 from difflib import SequenceMatcher
 
-filename         = "database.txt" # i didn't want to put a comment here but it looks weird otherwise so e
-learn            = True           # (default: True) disable if you want to keep your database pristine
-autosave_delay   = 300            # (default: 300)  you probably don't need to change this tbh
-typing_delay     = 0.1            # (default: 0.1)  seconds per character, set to 0 to turn off
-typing_delay_max = 5              # (default: 5)    maximum delay
+filename         = "dab.txt" # i didn't want to put a comment here but it looks weird otherwise so e
+learn            = True      # (default: True) disable if you want to keep your database pristine
+autosave_delay   = 300       # (default: 300)  you probably don't need to change this tbh
+typing_delay     = 0.1       # (default: 0.1)  seconds per character, set to 0 to turn off
+typing_delay_max = 5         # (default: 5)    maximum delay
 token            = "INSERT_TOKEN_HERE" # you need to put your discord bot token here, look it up
 admin_ids        = [] # put your and your friends' ids (in quotes) here, you can check them using developer mode
 
@@ -65,6 +65,9 @@ class chatbot:
                 f.close()
                 log("Successfully saved database!")
             self.needs_saving = False
+            return True
+        else:
+            return False
 
 @asyncio.coroutine
 def autosave():
@@ -84,9 +87,17 @@ def on_message(message):
     if message.author.id != dbot.user.id:
         if message.content.startswith("&"):
             if message.author.id in admin_ids:
-                if message.content[1:] == "!CEASE":
+                if message.content[1:] == "!COUNT":
+                    yield from dbot.send_message(message.channel, "current entry count: " + len(dbot.responses))
+                elif message.content[1:] == "!SAVE":
+                    yield from dbot.send_message(message.channel, "ok, saving...")
+                    if dbot.save():
+                        yield from dbot.send_message(message.channel, "saved")
+                    else:
+                        yield from dbot.send_message(message.channel, "actually nevermind there's no need")
+                elif message.content[1:] == "!CEASE":
                     log(message.author.name + "#" + message.author.discriminator + " (" + message.author.id + ") has requested ceasure!")
-                    yield from dbot.send_message(message.channel, "ok") 
+                    yield from dbot.send_message(message.channel, "ok")
                     log("Goodbye, cruel world!")
                     quit()
             else:
