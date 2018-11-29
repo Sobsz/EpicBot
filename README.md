@@ -16,9 +16,12 @@ me and someone called "celeri" are working on a public-ish version but that's no
 
 the code is hecka dirty and undocumented for now (and maybe forever) so just contact me at zsboS#8977 if you're stucc
 
-default prefix is `&`
+default chat prefix is `&`, default command prefix is `&!`
 
-there aren't really any epic features besides letting trusted people make it commit die (`&!CEASE`, case-sensitive) but i'll add them at some point i swear
+current commands for people on the admin list:
+- `&!COUNT` - counts the entries
+- `&!SAVE` - manual save in case you want to shut down the thing right now
+- `&!CEASE` - emergency shutdown
 
 also it adds the user id in every entry for moderation purposes but it should be compatible with regular epicbot anyway
 
