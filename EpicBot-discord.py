@@ -97,7 +97,6 @@ def on_message(message):
                         yield from dbot.send_message(message.channel, "actually nevermind there's no need")
                 elif message.content[1:] == "!CEASE":
                     log(message.author.name + "#" + message.author.discriminator + " (" + message.author.id + ") has requested ceasure!")
-                    yield from dbot.send_message(message.channel, "ok")
                     log("Goodbye, cruel world!")
                     quit()
             else:
