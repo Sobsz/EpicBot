@@ -11,6 +11,17 @@ also `/help` for more wacky commands
 
 example data coming whenever i feel like it's unbad enough to publish
 
+# ALSO THERE'S A DISCORD VERSION NOW
+me and someone called "celeri" are working on a public-ish version but that's not gonna happen until she gets a raspberry pi so for now you're gonna need to host it thineself
+
+the code is hecka dirty and undocumented for now (and maybe forever) so just contact me at zsboS#8977 if you're stucc
+
+default prefix is `&`
+
+there aren't really any epic features besides letting trusted people make it commit die (`&!CEASE`, case-sensitive) but i'll add them at some point i swear
+
+also it adds the user id in every entry for moderation purposes but it should be compatible with regular epicbot anyway
+
 ## what's a seqtrain and how use
 seqtrain is a script that lets you train the bot from chatlogs and other stuff
 
