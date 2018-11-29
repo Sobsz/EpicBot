@@ -9,7 +9,7 @@ you'll need to save the training data manually by typing `/s` every so often
 
 also `/help` for more wacky commands
 
-example data coming whenever i feel like it's unbad enough to publish
+you can use `database.txt` as a starting point for your bot but i wouldn't really recommend that tbh
 
 # ALSO THERE'S A DISCORD VERSION NOW
 me and someone called "celeri" are working on a public-ish version but that's not gonna happen until she gets a raspberry pi so for now you're gonna need to host it thineself
