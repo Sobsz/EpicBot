@@ -5,13 +5,13 @@ import discord
 import asyncio
 from difflib import SequenceMatcher
 
-filename         = "dab.txt" # i didn't want to put a comment here but it looks weird otherwise so e
-learn            = True      # (default: True) disable if you want to keep your database pristine
-autosave_delay   = 300       # (default: 300)  you probably don't need to change this tbh
-typing_delay     = 0.1       # (default: 0.1)  seconds per character, set to 0 to turn off
-typing_delay_max = 5         # (default: 5)    maximum delay
+filename         = "database.txt" # i didn't want to put a comment here but it looks weird otherwise so e
+learn            = True           # (default: True) disable if you want to keep your database pristine
+autosave_delay   = 300            # (default: 300)  you probably don't need to change this tbh
+typing_delay     = 0.1            # (default: 0.1)  seconds per character, set to 0 to turn off
+typing_delay_max = 5              # (default: 5)    maximum delay
 token            = "INSERT_TOKEN_HERE" # you need to put your discord bot token here, look it up
-admin_ids        = [] # put your and your friends' ids (in quotes) here, you can check them using developer mode
+admin_ids        = []             # put your and your friends' ids (in quotes) here, you can check them using developer mode
 
 last_responses   = dict()
 dbot             = discord.Client()
