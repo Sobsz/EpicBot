@@ -113,7 +113,7 @@ def on_message(message):
                     if message.channel.id not in last_responses:
                         last_responses[message.channel.id] = ("", 0)
                     cbot.learn(last_responses[message.channel.id][0], query, message.author.id)
-                    last_responses[message.channel.id] = (response, 0)
+                    last_responses[message.channel.id] = (response, time.time())
             
                 log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + query)
                 log("[" + message.server.name + " #" + message.channel.name + "] " + "EpicBot: " + response)
