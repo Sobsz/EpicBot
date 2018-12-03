@@ -14,7 +14,8 @@ class chatbot:
         self.responses = responses
 
     def clean(self, s):
-        cleaned = s.lower().strip().translate(str.maketrans("", "", ".,?!:;'\"()*_"))
+        cleaned = s.lower().translate(str.maketrans("", "", ".,?!:;'\"()*_")).strip()
+
         if debug:
             print("# " + stripped)
         if cleaned == "":
