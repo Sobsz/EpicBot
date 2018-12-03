@@ -27,7 +27,7 @@ class chatbot:
         self.needs_saving = False
 
     def clean(self, s):
-        cleaned = s.lower().strip().translate(str.maketrans("", "", ".,?!:;'\"()*_"))
+        cleaned = s.lower().translate(str.maketrans("", "", ".,?!:;'\"()*_")).strip()
         if cleaned == "":
             return s.lower().strip()
         else:
