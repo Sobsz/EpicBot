@@ -50,8 +50,9 @@ class chatbot:
         return random.choice(best_responses)
 
     def learn(self, query, response, author):
-        self.responses.append((self.clean(query), response, author))
-        self.needs_saving = True
+        if len(response) > 0:
+            self.responses.append((self.clean(query), response, author))
+            self.needs_saving = True
 
     def save(self, filename):
         if self.needs_saving == True:
@@ -86,23 +87,23 @@ def on_ready():
 def on_message(message):
     if message.author.id != dbot.user.id:
         if message.content.startswith("&"):
-            if message.author.id in admin_ids:
-                if message.content[1:] == "!COUNT":
-                    yield from dbot.send_message(message.channel, "current entry count: " + len(dbot.responses))
-                elif message.content[1:] == "!SAVE":
-                    yield from dbot.send_message(message.channel, "ok, saving...")
-                    if dbot.save():
-                        yield from dbot.send_message(message.channel, "saved")
-                    else:
-                        yield from dbot.send_message(message.channel, "actually nevermind there's no need")
-                elif message.content[1:] == "!CEASE":
-                    log(message.author.name + "#" + message.author.discriminator + " (" + message.author.id + ") has requested ceasure!")
-                    log("Goodbye, cruel world!")
-                    quit()
+            if message.author.id in admin_ids and message.content[1:] == "!COUNT":
+                yield from dbot.send_message(message.channel, "current entry count: " + str(len(cbot.responses)))
+            elif message.author.id in admin_ids and message.content[1:] == "!SAVE":
+                yield from dbot.send_message(message.channel, "ok, saving...")
+                if cbot.save():
+                    yield from dbot.send_message(message.channel, "saved")
+                else:
+                    yield from dbot.send_message(message.channel, "actually nevermind there's no need")
+            elif message.author.id in admin_ids and message.content[1:] == "!CEASE":
+                log(message.author.name + "#" + message.author.discriminator + " (" + message.author.id + ") has requested ceasure!")
+                log("Goodbye, cruel world!")
+                quit()
             else:
                 query = message.content[1:]
+                log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + query.strip())
                 response = cbot.respond(query)
-
+                    
                 if typing_delay > 0:
                     yield from dbot.send_typing(message.channel)
                     yield from asyncio.sleep(min(len(response) * typing_delay, typing_delay_max))
@@ -115,7 +116,6 @@ def on_message(message):
                     cbot.learn(last_responses[message.channel.id][0], query, message.author.id)
                     last_responses[message.channel.id] = (response, time.time())
             
-                log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + query)
                 log("[" + message.server.name + " #" + message.channel.name + "] " + "EpicBot: " + response)
         
 log("EpicBot v6.2.1-discord - made by zsboS#8977")
