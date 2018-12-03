@@ -27,11 +27,11 @@ class chatbot:
         self.needs_saving = False
 
     def clean(self, s):
-        stripped = s.strip().translate(str.maketrans("", "", ".,?!:;'\"()*_")).lower()
-        if stripped == "":
-            return s
+        cleaned = s.lower().strip().translate(str.maketrans("", "", ".,?!:;'\"()*_"))
+        if cleaned == "":
+            return s.lower().strip()
         else:
-            return stripped
+            return cleaned
     
     def dist(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
