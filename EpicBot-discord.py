@@ -86,6 +86,7 @@ def on_ready():
 @asyncio.coroutine
 def on_message(message):
     if message.author.id != dbot.user.id:
+        log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + message.content[1:].strip())
         yield from dbot.send_typing(message.channel)
         if message.content.startswith("&"):
             if message.author.id in admin_ids and message.content[1:] == "!COUNT":
@@ -102,7 +103,6 @@ def on_message(message):
                 quit()
             else:
                 query = message.content[1:]
-                log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + query.strip())
                 response = cbot.respond(query)
                     
                 if typing_delay > 0:
