@@ -86,6 +86,7 @@ def on_ready():
 @asyncio.coroutine
 def on_message(message):
     if message.author.id != dbot.user.id:
+        yield from dbot.send_typing(message.channel)
         if message.content.startswith("&"):
             if message.author.id in admin_ids and message.content[1:] == "!COUNT":
                 yield from dbot.send_message(message.channel, "current entry count: " + str(len(cbot.responses)))
@@ -105,7 +106,6 @@ def on_message(message):
                 response = cbot.respond(query)
                     
                 if typing_delay > 0:
-                    yield from dbot.send_typing(message.channel)
                     yield from asyncio.sleep(min(len(response) * typing_delay, typing_delay_max))
                 
                 yield from dbot.send_message(message.channel, response)
