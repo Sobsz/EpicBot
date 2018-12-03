@@ -14,13 +14,13 @@ class chatbot:
         self.responses = responses
 
     def clean(self, s):
-        stripped = s.strip().translate(str.maketrans("", "", ".,?!:;'\"()*_")).lower()
+        cleaned = s.lower().strip().translate(str.maketrans("", "", ".,?!:;'\"()*_"))
         if debug:
             print("# " + stripped)
-        if stripped == "":
-            return s
+        if cleaned == "":
+            return s.lower().strip()
         else:
-            return stripped
+            return cleaned
     
     def dist(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
