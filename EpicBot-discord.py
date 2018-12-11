@@ -5,13 +5,13 @@ import discord
 import asyncio
 from difflib import SequenceMatcher
 
-filename         = "database.txt" # i didn't want to put a comment here but it looks weird otherwise so e
-learn            = True           # (default: True) disable if you want to keep your database pristine
-autosave_delay   = 300            # (default: 300)  you probably don't need to change this tbh
-typing_delay     = 0.1            # (default: 0.1)  seconds per character, set to 0 to turn off
-typing_delay_max = 5              # (default: 5)    maximum delay
+filename         = "database.txt"      # i didn't want to put a comment here but it looks weird otherwise so e
+learn            = True                # (default: True) disable if you want to keep your database pristine
+autosave_delay   = 300                 # (default: 300)  you probably don't need to change this tbh
+typing_delay     = 0.05                # (default: 0.05) seconds per character, set to 0 to turn off
+typing_delay_max = 5                   # (default: 5)    maximum delay
 token            = "INSERT_TOKEN_HERE" # you need to put your discord bot token here, look it up
-admin_ids        = []             # put your and your friends' ids (in quotes) here, you can check them using developer mode
+admin_ids        = []                  # put your and your friends' ids (in quotes) here, you can check them using developer mode
 
 last_responses   = dict()
 dbot             = discord.Client()
@@ -27,7 +27,7 @@ class chatbot:
         self.needs_saving = False
 
     def clean(self, s):
-        cleaned = s.lower().translate(str.maketrans("", "", ".,?!:;'\"()*_")).strip()
+        cleaned = s.lower().translate(str.maketrans("", "", ".,?!:;'\"()*_[]{}<>")).strip()
         if cleaned == "":
             return s.lower().strip()
         else:
@@ -51,7 +51,7 @@ class chatbot:
 
     def learn(self, query, response, author):
         if len(response) > 0:
-            self.responses.append((self.clean(query), response, author))
+            self.responses.append((self.clean(query), response.strip(), author))
             self.needs_saving = True
 
     def save(self, filename):
@@ -61,7 +61,7 @@ class chatbot:
                 os.remove(filename + ".bak")
             if os.path.exists(filename):
                 os.rename(filename, filename + ".bak")
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding = "utf-8") as f:
                 f.write(repr(self.responses))
                 f.close()
                 log("Successfully saved database!")
@@ -86,14 +86,14 @@ def on_ready():
 @asyncio.coroutine
 def on_message(message):
     if message.author.id != dbot.user.id:
-        log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + message.content[1:].strip())
-        yield from dbot.send_typing(message.channel)
         if message.content.startswith("&"):
-            if message.author.id in admin_ids and message.content[1:] == "!COUNT":
+            log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + message.content[1:].strip())
+            
+            if message.content[1:].lower() == "!count":
                 yield from dbot.send_message(message.channel, "current entry count: " + str(len(cbot.responses)))
-            elif message.author.id in admin_ids and message.content[1:] == "!SAVE":
+            elif message.author.id in admin_ids and message.content[1:].lower == "!save":
                 yield from dbot.send_message(message.channel, "ok, saving...")
-                if cbot.save():
+                if cbot.save(filename):
                     yield from dbot.send_message(message.channel, "saved")
                 else:
                     yield from dbot.send_message(message.channel, "actually nevermind there's no need")
@@ -101,13 +101,18 @@ def on_message(message):
                 log(message.author.name + "#" + message.author.discriminator + " (" + message.author.id + ") has requested ceasure!")
                 log("Goodbye, cruel world!")
                 quit()
+            elif message.author.id in admin_ids and message.content[1:].lower == "!CEASE":
+                yield from dbot.send_message(message.channel, "sorry mate, you're gonna wanna use uppercase on that/nsecurity measures, you know")
+            elif message.content[1] == "!":
+                yield from dbot.send_message(message.channel, "haha no (invalid command or not enough perms)")
             else:
+                if typing_delay > 0:
+                    yield from dbot.send_typing(message.channel)
+                    yield from asyncio.sleep(min(len(response) * typing_delay, typing_delay_max))
+
                 query = message.content[1:]
                 response = cbot.respond(query)
                     
-                if typing_delay > 0:
-                    yield from asyncio.sleep(min(len(response) * typing_delay, typing_delay_max))
-                
                 yield from dbot.send_message(message.channel, response)
             
                 if learn:
@@ -121,25 +126,28 @@ def on_message(message):
 log("EpicBot v6.2.1-discord - made by zsboS#8977")
 log("Loading database...")
 try:
-    file = open(filename)
+    file = open(filename, "r", encoding = "utf-8")
     if os.path.getsize(filename) == 0:
         raise IOError
-    cbot = chatbot(eval(file.read()))
+    s = file.read()
+    s = s[1:] if s.startswith(u"\ufeff") else s
+    cbot = chatbot(eval(s))
     file.close()
     log("Successfully loaded " + str(len(cbot.responses)) + " entries.")
 except IOError:
     log("Database does not exist, loading backup...")
     try:
-        file = open(filename + ".bak")
+        file = open(filename + ".bak", "r", encoding = "utf-8")
         if os.path.getsize(filename + ".bak") == 0:
             raise IOError
-        cbot = chatbot(eval(file.read()))
+        s = file.read()
+        s = s[1:] if s.startswith(u"\ufeff") else s
+        cbot = chatbot(eval(s))
         file.close()
         log("Successfully loaded " + str(len(cbot.responses)) + " entries.")
     except IOError:
         log("Backup does not exist, creating new database......")
         cbot = chatbot()
-        cbot.save(filename)
         log("Successfully created database.")
     except ValueError:
         log("Backup may be corrupt! Please remove or rename the " + filename + ".bak file, then restart.")
@@ -149,7 +157,9 @@ except ValueError:
     log("Database may be corrupt! Please remove or rename the " + filename + " file, then restart.")
     input("Press Enter to continue...")
     exit()
+del s
 
 log("Connecting to Discord...")
 dbot.loop.create_task(autosave())
 dbot.run(token)
+
