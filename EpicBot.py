@@ -51,13 +51,15 @@ try:
     file = open(filename)
     if os.path.getsize(filename) == 0:
         raise IOError
-    bot = chatbot(eval(file.read()))
+    s = file.read()
+    s = s[1:] if s.startswith(u"\ufeff") else s
+    bot = chatbot(eval(s))
     file.close()
     print("* Successfully loaded " + str(len(bot.responses)) + " entries.")
 except IOError:
     bot = chatbot()
     print("* Database does not exist, creating...")
-    file = open(filename, "w")
+    file = open(filename, "w", encoding = "utf-8")
     file.write(repr(bot.responses))
     file.close()
     print("* Successfully created database.")
@@ -100,7 +102,7 @@ while True:
                 print("* Taught " + str(count) + " responses successfully!")
             elif query in ("/save", "/s"):
                 print("* Saving " + str(len(bot.responses)) + " entries...")
-                file = open(filename, "w")
+                file = open(filename, "w", encoding = "utf-8")
                 file.write(repr(bot.responses))
                 file.close()
                 if debug:
