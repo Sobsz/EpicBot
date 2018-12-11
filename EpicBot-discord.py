@@ -89,7 +89,24 @@ def on_message(message):
         if message.content.startswith("&"):
             log("[" + message.server.name + " #" + message.channel.name + "] " + message.author.name + "#" + message.author.discriminator + ": " + message.content[1:].strip())
             
-            if message.content[1:].lower() == "!count":
+            if len(message.content) < 2:
+                if typing_delay > 0:
+                    yield from dbot.send_typing(message.channel)
+                    yield from asyncio.sleep(min(len(response) * typing_delay, typing_delay_max))
+
+                query = message.content[1:]
+                response = cbot.respond(query)
+                    
+                yield from dbot.send_message(message.channel, response)
+            
+                if learn:
+                    if message.channel.id not in last_responses:
+                        last_responses[message.channel.id] = ("", 0)
+                    cbot.learn(last_responses[message.channel.id][0], query, message.author.id)
+                    last_responses[message.channel.id] = (response, time.time())
+            
+                log("[" + message.server.name + " #" + message.channel.name + "] " + "EpicBot: " + response)
+            elif message.content[1:].lower() == "!count":
                 yield from dbot.send_message(message.channel, "current entry count: " + str(len(cbot.responses)))
             elif message.author.id in admin_ids and message.content[1:].lower == "!save":
                 yield from dbot.send_message(message.channel, "ok, saving...")
@@ -157,9 +174,9 @@ except ValueError:
     log("Database may be corrupt! Please remove or rename the " + filename + " file, then restart.")
     input("Press Enter to continue...")
     exit()
-del s
+if s:
+    del s
 
 log("Connecting to Discord...")
 dbot.loop.create_task(autosave())
 dbot.run(token)
-
