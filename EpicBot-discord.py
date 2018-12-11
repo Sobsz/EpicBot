@@ -118,7 +118,7 @@ def on_message(message):
                 log(message.author.name + "#" + message.author.discriminator + " (" + message.author.id + ") has requested ceasure!")
                 log("Goodbye, cruel world!")
                 quit()
-            elif message.author.id in admin_ids and message.content[1:].lower == "!CEASE":
+            elif message.author.id in admin_ids and message.content[1:].lower == "!cease":
                 yield from dbot.send_message(message.channel, "sorry mate, you're gonna wanna use uppercase on that/nsecurity measures, you know")
             elif message.content[1] == "!":
                 yield from dbot.send_message(message.channel, "haha no (invalid command or not enough perms)")
