@@ -1,3 +1,5 @@
+(project's dead btw)
+
 # EpicBot
 the epicest laziest retrieval-based-est chatbot ever
 
@@ -12,7 +14,7 @@ also `/help` for more wacky commands
 you can use `database.txt` as a starting point for your bot but i wouldn't really recommend that tbh
 
 # ALSO THERE'S A DISCORD VERSION NOW
-me and someone called "celeri" are working on a public-ish version but that's not gonna happen until she gets a raspberry pi so for now you're gonna need to host it thineself
+~~me and someone called "celeri" are working on a public-ish version but that's not gonna happen until she gets a raspberry pi so~~ for now you're gonna need to host it thineself
 
 the code is hecka dirty and undocumented for now (and maybe forever) so just contact me at zsboS#8977 if you're stucc
 
