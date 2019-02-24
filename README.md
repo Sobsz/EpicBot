@@ -38,18 +38,17 @@ if that's the case you'll need to change the `use_both_sides` variable to `False
 
 (also it'll assume the person speaking in the even-numbered lines is what it's supposed to emulate)
 
-if you want to put multiple chatlogs in one database then either use the script multiple times or just add an empty line between the things
+if you want to put multiple chatlogs in one database then either use the script multiple times or just add an empty line between the things like this:
 
 ```
-l
-i
-k
-e
+hi
+sup
+not much
+ok
 
-t
-h
-i
-s
+how ya doin'
+bad
+coolio
 ```
 
-(or maybe 0 or 2 lines sometimes but that's only if you're doing the waifu thing, just make sure ~~ralsei~~ the soon-to-be bot is still speaking in the even-numbered lines)
+(or maybe 0 or 2 lines sometimes but that's only if you're doing the waifu thing, just make sure ~~Ralsei~~ the soon-to-be bot is still speaking in the even-numbered lines)
